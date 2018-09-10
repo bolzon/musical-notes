@@ -5,11 +5,11 @@ class Octave {
 
 	constructor(level, a) {
 		this.level = `${level}`;
-		for (let i=0, j=0; i<letters.length; i++, j++) {
+		for (let i = 0, j = -9; i < letters.length; i++, j++) {
 			const letter = letters[i];
-			this[`${letter}${this.level}`] = a * Math.pow(2, (j - 9) / 12);
+			this[`${letter}${this.level}`] = a * Math.pow(2, j / 12);
 			if (!/[BE]/i.test(letter)) {
-				this[`${letter}#${this.level}`] = a * Math.pow(2, (++j - 9) / 12);
+				this[`${letter}#${this.level}`] = a * Math.pow(2, ++j / 12);
 			}
 		}
 	}
