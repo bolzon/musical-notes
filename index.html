@@ -1,0 +1,53 @@
+<button>Play</button>
+
+<script>
+
+const letters = 'CDEFGAB';
+
+function Octave(level, a) {
+	this.level = `${level}`;
+	for (let i = 0, j = -9; i < letters.length; i++, j++) {
+		const letter = letters[i];
+		this[`${letter}${this.level}`] = a * Math.pow(2, j / 12);
+		if (!/[BE]/i.test(letter)) {
+			this[`${letter}#${this.level}`] = a * Math.pow(2, ++j / 12);
+		}
+	}
+}
+
+Octave.prototype.toString = function() {
+	console.log(`Level: ${this.level}\n`);
+	for (const p of Object.keys(this)) {
+		if (typeof this[p] === 'number') {
+			console.log(`  ${p} = ${this[p]}`);
+		}
+	}
+	console.log('');
+}
+
+const A4 = 440; // base A
+const scale = [];
+
+for (let i = -4; i <= 4; i++) {
+	let a = A4 * Math.pow(2, i);
+	let octave = new Octave(i, a);
+	scale.push(octave);
+}
+
+window.onload = function() {
+
+	document.querySelector('button').addEventListener('click', function() {
+
+		var AudioContext = window.AudioContext || window.webkitAudioContext;
+		var audioCtx = new AudioContext();
+
+		var oscillator = audioCtx.createOscillator();
+		oscillator.frequency.value = 440;
+
+		oscillator.connect(audioCtx.destination);
+		oscillator.start();
+		oscillator.stop(audioCtx.currentTime + 1);
+	});
+};
+
+</script>
